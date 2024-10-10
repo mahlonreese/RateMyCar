@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using RateMyCar.Data;
+
 namespace RateMyCar
 {
     public class Program
@@ -8,6 +11,11 @@ namespace RateMyCar
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddDbContext<CarDbContext>(options =>
+            {
+                options.UseNpgsql(builder.Configuration.GetConnectionString("AppDbContext"));
+            });
 
             var app = builder.Build();
 

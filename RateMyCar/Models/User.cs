@@ -2,7 +2,7 @@
 
 namespace RateMyCar.Models
 {
-    [Table("user")]
+    [Table("users")]
     public class User
     {
         [Column("user_id")]
@@ -16,5 +16,10 @@ namespace RateMyCar.Models
 
         [Column("password", TypeName = "varchar(100)")]
         public required string Password { get; set; }
+
+        [Column("full_name", TypeName = "varchar(100)")]
+        public required string Fullname { get; set; }
+
+        public ICollection<Review> Reviews { get; set; } = new List<Review>();
     }
 }

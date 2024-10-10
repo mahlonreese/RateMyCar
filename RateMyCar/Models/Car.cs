@@ -14,9 +14,12 @@ namespace RateMyCar.Models
         [Column("model", TypeName = "varchar(200)")]
         public required string Model { get; set; }
 
+        [Column("category", TypeName = "varchar(200)")]
+        public required string Category { get; set; }
+
         [Column("year")]
         public required int Year { get; set; }
 
-
+        public ICollection<Review> Reviews { get; set; } = new List<Review>();
     }
 }
