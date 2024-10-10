@@ -17,7 +17,7 @@ namespace RateMyCar.Models
         [Column("password", TypeName = "varchar(100)")]
         public required string Password { get; set; }
 
-        [Column("full_name", TypeName = "varchar(100)")]
+        [Column("full_name", TypeName = "varchar(200)")]
         public required string Fullname { get; set; }
 
         public ICollection<Review> Reviews { get; set; } = new List<Review>();

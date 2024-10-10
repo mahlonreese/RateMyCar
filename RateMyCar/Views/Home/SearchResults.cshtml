@@ -1,0 +1,35 @@
+﻿@model List<RateMyCar.Models.Car>
+
+@{
+    ViewData["Title"] = "Search Results";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if (Model != null && Model.Any())
+{
+    <ul>
+        @foreach (var car in Model)
+        {
+            <li>
+                <strong>Make:</strong> @car.Make <br />
+                <strong>Model:</strong> @car.Model <br />
+                <strong>Year:</strong> @car.Year <br />
+                <strong>Reviews:</strong>
+                <ul>
+                    @foreach (var review in car.Reviews)
+                    {
+                        <li>
+                            <strong>Rating:</strong> @review.Rating <br />
+                            <strong>Comment:</strong> @review.Comments
+                        </li>
+                    }
+                </ul>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>No cars found matching your search.</p>
+}

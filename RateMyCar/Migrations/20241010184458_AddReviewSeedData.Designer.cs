@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RateMyCar.Data;
@@ -11,9 +12,11 @@ using RateMyCar.Data;
 namespace RateMyCar.Migrations
 {
     [DbContext(typeof(CarDbContext))]
-    partial class CarDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241010184458_AddReviewSeedData")]
+    partial class AddReviewSeedData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -193,7 +196,7 @@ namespace RateMyCar.Migrations
                             CarId = 1,
                             Comments = "Amazing car, probably the best ever",
                             DatePosted = new DateOnly(2023, 2, 20),
-                            PhotoUrl = "https://www.motortrend.com/uploads/sites/5/2016/12/2017-Toyota-RAV4-SE-front-three-quarter-in-motion-02-e1502926043520.jpg",
+                            PhotoUrl = "",
                             Rating = 5,
                             UserId = 1
                         },
@@ -203,7 +206,7 @@ namespace RateMyCar.Migrations
                             CarId = 2,
                             Comments = "Would not buy again, not 10/10",
                             DatePosted = new DateOnly(2024, 4, 23),
-                            PhotoUrl = "https://s1.1zoom.me/b5154/579/Toyota_Supra_mk5_GR_A90_Gazoo_Racing_mkV_2.0L_584944_2560x1440.jpg",
+                            PhotoUrl = "",
                             Rating = 1,
                             UserId = 2
                         },
@@ -213,7 +216,7 @@ namespace RateMyCar.Migrations
                             CarId = 3,
                             Comments = "Got the job done, it is very reliable",
                             DatePosted = new DateOnly(2020, 11, 10),
-                            PhotoUrl = "https://th.bing.com/th/id/R.6cd93fbb1d81f90a05c82098668438e5?rik=BSK8s2gRoss4uw&pid=ImgRaw&r=0",
+                            PhotoUrl = "",
                             Rating = 4,
                             UserId = 3
                         },
@@ -223,7 +226,7 @@ namespace RateMyCar.Migrations
                             CarId = 4,
                             Comments = "Stay away, it worked for 3 months",
                             DatePosted = new DateOnly(2024, 9, 28),
-                            PhotoUrl = "https://th.bing.com/th/id/OIP.bw6h6Chq7Hz65Js0ZmHVEQHaEJ?rs=1&pid=ImgDetMain",
+                            PhotoUrl = "",
                             Rating = 2,
                             UserId = 1
                         },
@@ -233,7 +236,7 @@ namespace RateMyCar.Migrations
                             CarId = 5,
                             Comments = "Very reliable, just not that stylish",
                             DatePosted = new DateOnly(2024, 2, 27),
-                            PhotoUrl = "https://cdn.motor1.com/images/mgl/zOXX4/s1/2021-toyota-tacoma-trd-off-road-driving-notes.jpg",
+                            PhotoUrl = "",
                             Rating = 3,
                             UserId = 2
                         });

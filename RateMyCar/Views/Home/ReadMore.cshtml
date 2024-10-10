@@ -1,0 +1,7 @@
+﻿@model RateMyCar.Models.Review
+
+<h2>@Model.Car.Year @Model.Car.Make @Model.Car.Model</h2>
+<p>Rating: @Model.Rating</p>
+<p>@Model.Comments</p>
+<img src="@Model.PhotoUrl" alt="Car Image" style="height: 300px; object-fit: cover;">
+<p>Reviewed by: @Model.User.Fullname</p>

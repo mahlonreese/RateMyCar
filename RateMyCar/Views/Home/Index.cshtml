@@ -1,8 +1,61 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "RateMyCar";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">RateMyCar</h1>
+    <p>Find reviews for different cars and rate your own.</p>
 </div>
+
+<style>
+        .star-rating .fa {
+            font-size: 20px;
+            color: #ddd;
+        }
+
+        .star-rating .checked {
+            color: orange;
+        }
+   </style>
+
+@if (Model != null)
+{
+        <div class="row">
+        @foreach (var rev in Model)
+        {
+                    <div class="col-md-4">
+                        <div class="card mb-4 shadow-sm">
+                            <img src="@rev.PhotoUrl" class="card-img-top" alt="Car Image" style="height: 200px; object-fit: cover;">
+                            <div class="card-body">
+                                <h5 class="card-title">@rev.Car.Year @rev.Car.Make @rev.Car.Model</h5>
+                                <div class="star-rating">
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                if (i <= rev.Rating)
+                                {
+                                                    <span class="fa fa-star checked"></span>
+                                }
+                                else
+                                {
+                                                    <span class="fa fa-star"></span>
+                                }
+                            }
+                                </div>
+                                <p class="card-text">@rev.Comments</p>
+                                <a href="@Url.Action("ReadMore", "Home", new { id = rev.ReviewId })" class="btn btn-primary">Read More</a>
+                            </div>
+                        </div>
+                    </div>
+        }
+        </div>
+}
+else
+{
+        <p>No reviews available.</p>
+}
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+

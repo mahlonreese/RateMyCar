@@ -1,0 +1,11 @@
+﻿@{
+    ViewData["Title"] = "Search Cars";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form method="get" asp-action="SearchCars" asp-controller="Home">
+    <label for="carSearch">Search for a car (Make or Model):</label>
+    <input type="text" id="carSearch" name="query" placeholder="Enter Make or Model" required />
+    <button type="submit">Search</button>
+</form>

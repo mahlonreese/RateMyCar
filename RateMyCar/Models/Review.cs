@@ -18,7 +18,7 @@ namespace RateMyCar.Models
         public string? PhotoUrl { get; set; }
 
         [Column("date_posted")]
-        public DateTime DatePosted { get; set; }
+        public DateOnly DatePosted { get; set; }
 
 
         [ForeignKey("User")]

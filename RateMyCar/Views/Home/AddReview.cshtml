@@ -1,0 +1,83 @@
+﻿@model RateMyCar.Models.Review
+
+@{
+    ViewData["Title"] = "Create Review";
+}
+
+<h2>Create Review</h2>
+
+<form asp-action="AddReview" method="post">
+   @*  <div class="form-group">
+        <label asp-for="CarYear" class="control-label"></label>
+        <input asp-for="CarYear" class="form-control" />
+        <span asp-validation-for="CarYear" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="CarMake" class="control-label"></label>
+        <input asp-for="CarMake" class="form-control" />
+        <span asp-validation-for="CarMake" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="CarModel" class="control-label"></label>
+        <input asp-for="CarModel" class="form-control" />
+        <span asp-validation-for="CarModel" class="text-danger"></span>
+    </div> *@
+     <div>
+        <label>Year</label>
+        <select asp-for="Car.Year">
+            @for (int year = DateTime.Now.Year; year >= 1990; year--)
+            {
+                <option value="@year">@year</option>
+            }
+        </select>
+    </div>
+    <div>
+        <label>Make</label>
+            <select asp-for="Car.Make">
+            <option value="Toyota">Toyota</option>
+            <option value="Honda">Honda</option>
+            <option value="Ford">Ford</option>
+        </select>
+    </div>
+    <div>
+        <label>Model</label>
+        <select asp-for="Car.Model">
+            <option value="Camry">Camry</option>
+            <option value="Civic">Civic</option>
+            <option value="Mustang">Mustang</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label asp-for="PhotoUrl" class="control-label"></label>
+        <input asp-for="PhotoUrl" class="form-control" />
+        <span asp-validation-for="PhotoUrl" class="text-danger"></span>
+    </div>
+    <div>
+        <label asp-for="Rating"></label>
+        <select asp-for="Rating">
+            @for (int rating = 1; rating <= 5; rating++)
+            {
+                <option value="@rating">@rating</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label asp-for="Comments" class="control-label"></label>
+        <textarea asp-for="Comments" class="form-control"></textarea>
+        <span asp-validation-for="Comments" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="User.Email" class="control-label">User Email</label>
+        <textarea asp-for="User.Email" class="form-control"></textarea>
+        <span asp-validation-for="User.Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-primary" />
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
