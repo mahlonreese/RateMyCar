@@ -103,6 +103,21 @@ namespace RateMyCar.Controllers
             return Redirect("/");
         }
 
+        [HttpPost]
+        public IActionResult EditReview(int ReviewId, string ReviewText, string ReviewPhoto, int Rating)
+        {
+            // Fetch the review from the database using the ReviewId
+            var review = _context.Reviews.Find(ReviewId);
+            if (review != null)
+            {
+                review.Comments = ReviewText;
+                review.PhotoUrl = ReviewPhoto;
+                review.Rating = Rating;
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("ReadMore", new { id = ReviewId });
+        }
 
 
         // car details
