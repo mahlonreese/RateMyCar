@@ -119,6 +119,19 @@ namespace RateMyCar.Controllers
             return RedirectToAction("ReadMore", new { id = ReviewId });
         }
 
+        [HttpPost]
+        public IActionResult DeleteReview(int ReviewId)
+        {
+            var review = _context.Reviews.Find(ReviewId);
+            if (review != null)
+            {
+                _context.Reviews.Remove(review);
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+
 
         // car details
         [HttpGet("/cars/{car_id}")]
