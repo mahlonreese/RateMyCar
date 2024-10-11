@@ -25,13 +25,13 @@
      
     <div>
         <label>Car</label>
-        <select name="Car">
+        <select name="CarId">
             @* <option value="Toyota">Toyota</option>
             <option value="Honda">Honda</option>
             <option value="Ford">Ford</option>  *@
             @foreach(var car in Model.cars)
             {
-                <option value="@car.Make">@car.Year @car.Make @car.Model</option>
+                <option value="@car.CarId">@car.Year @car.Make @car.Model</option>
             }
         </select>
     </div>
@@ -56,13 +56,13 @@
         <span name="Comments" class="text-danger"></span>
     </div>
     <div class="form-group">
-        @* <label name="User.Email" class="control-label">User Email</label>
-        <input name="User.Email" class="form-control"></textarea>
+        <label name="UserId" class="control-label">User</label>
+        @*<input name="User.Email" class="form-control"></textarea>
         <span name="User.Email" class="text-danger"></span> *@
-        <select name="User">
+        <select name="UserId">
             @foreach (var user in Model.users)
             {
-                <option value="@user.UserId"> @user.Username  </option>
+                <option value="@user.UserId"> @user.Username </option>
             }
         </select>
     </div>

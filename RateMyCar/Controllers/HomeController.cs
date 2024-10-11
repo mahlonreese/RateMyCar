@@ -60,13 +60,13 @@ namespace RateMyCar.Controllers
 
         // when the submit button in add review is clicked
         [HttpPost]
-        public IActionResult AddReview(Review review)
+        public IActionResult AddReview(NewReview review)
         {
             Console.WriteLine(JsonConvert.SerializeObject(review));
 
             //if (ModelState.IsValid)
             //{
-            //    // find the car in the database with those properties
+                // find the car in the database with those properties
             //    Car reviewedCar = _context.Cars.FirstOrDefault(u => u.CarId == review.CarId);
 
             //    review.Car = reviewedCar;
@@ -84,7 +84,23 @@ namespace RateMyCar.Controllers
             //    return RedirectToAction(nameof(Index));
             //}
 
-            return View();
+            var newReviewId = _context.Reviews.Max(r => r.ReviewId) + 1;
+
+            var newReview = new Review
+            {
+                ReviewId = newReviewId,
+                Rating = review.Rating,
+                Comments = review.Comments,
+                PhotoUrl = review.PhotoUrl,
+                DatePosted = new DateOnly(2024, 10, 11),
+                UserId = review.UserId,
+                CarId = review.CarId
+            };
+
+            _context.Reviews.Add(newReview);
+            _context.SaveChanges();
+
+            return Redirect("/");
         }
 
 
