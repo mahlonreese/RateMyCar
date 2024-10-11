@@ -3,6 +3,8 @@ using RateMyCar.Models;
 using System.Diagnostics;
 using RateMyCar.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Newtonsoft.Json;
 
 namespace RateMyCar.Controllers
 {
@@ -48,34 +50,41 @@ namespace RateMyCar.Controllers
         [HttpGet("/addreview")]
         public IActionResult AddReview()
         {
-            return View();
+            List<Car> cars = _context.Cars.ToList();
+            List<User> users = _context.Users.ToList();
+
+            var carUser = new {cars = cars, users = users};
+
+            return View(carUser);
         }
 
         // when the submit button in add review is clicked
         [HttpPost]
         public IActionResult AddReview(Review review)
         {
-            if (ModelState.IsValid)
-            {
-                // find the car in the database with those properties
-                Car reviewedCar = _context.Cars.FirstOrDefault(u => u.Make == review.Car.Make && u.Model == review.Car.Model && u.Year == review.Car.Year);
+            Console.WriteLine(JsonConvert.SerializeObject(review));
 
-                review.Car = reviewedCar;
-                review.CarId = reviewedCar.CarId;
+            //if (ModelState.IsValid)
+            //{
+            //    // find the car in the database with those properties
+            //    Car reviewedCar = _context.Cars.FirstOrDefault(u => u.CarId == review.CarId);
 
-                User reviewer = _context.Users.FirstOrDefault(u => u.Email == review.User.Email);
+            //    review.Car = reviewedCar;
+            //    review.CarId = reviewedCar.CarId;
 
-                review.User = reviewer;
-                review.UserId = reviewer.UserId;
+            //    User reviewer = _context.Users.FirstOrDefault(u => u.Email == review.User.Email);
 
-                // Save the review to the database
-                _context.Reviews.Add(review);
-                _context.SaveChanges();
+            //    review.User = reviewer;
+            //    review.UserId = reviewer.UserId;
 
-                return RedirectToAction(nameof(Index));
-            }
+            //    // Save the review to the database
+            //    _context.Reviews.Add(review);
+            //    _context.SaveChanges();
 
-            return View(review);
+            //    return RedirectToAction(nameof(Index));
+            //}
+
+            return View();
         }
 
 
@@ -114,11 +123,12 @@ namespace RateMyCar.Controllers
                 return RedirectToAction("Index");
             }
 
-            // Search for cars matching the query
+            //Search for cars matching the query
+
             var matchingCars = _context.Cars
-                .Where(c => c.Make.Contains(query) || c.Model.Contains(query))
-                .Include(c => c.Reviews) // Optionally include reviews
-                .ToList();
+               .Where(c => c.Make.Contains(query) || c.Model.Contains(query))
+               .Include(c => c.Reviews) // Optionally include reviews
+               .ToList();
 
             if (!matchingCars.Any())
             {
