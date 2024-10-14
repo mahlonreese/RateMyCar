@@ -1,4 +1,78 @@
-﻿@model RateMyCar.Models.Review
+﻿<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<div class="container mt-4">
+    <h2>@Model.Car.Year @Model.Car.Make @Model.Car.Model</h2>
+    <p><strong>Rating:</strong> @Model.Rating</p>
+    <p>@Model.Comments</p>
+    <img src="@Model.PhotoUrl" alt="Car Image" class="img-fluid mb-3" style="height: 300px; object-fit: cover;">
+    <p><strong>Reviewed by:</strong> @Model.User.Fullname</p>
+
+    @if (Context.Session.GetInt32("UserId") == @Model.UserId)
+    {
+        <div class="d-flex">
+            <a href="#" id="edit-icon" class="btn btn-warning mr-2" onclick="showEditForm()">
+                <i class="fas fa-pencil-alt"></i> Edit
+            </a>
+            <a href="#" id="delete-icon" class="btn btn-danger" onclick="confirmDelete()">
+                <i class="fas fa-trash-alt"></i> Delete
+            </a>
+        </div>
+        <form id="delete-form" asp-action="DeleteReview" method="post" style="display:none;">
+            <input type="hidden" name="ReviewId" value="@Model.ReviewId" />
+        </form>
+    }
+
+    <div id="edit-form" class="mt-3" style="display:none;">
+        <form asp-action="EditReview" method="post">
+            <input type="hidden" name="ReviewId" value="@Model.ReviewId" />
+            <div class="form-group">
+                <label for="ReviewText">Review</label>
+                <textarea id="ReviewText" name="ReviewText" class="form-control">@Model.Comments</textarea>
+            </div>
+            <div class="form-group">
+                <label for="ReviewPhoto">Photo URL</label>
+                <textarea id="ReviewPhoto" name="ReviewPhoto" class="form-control">@Model.PhotoUrl</textarea>
+            </div>
+            <div class="form-group">
+                <label for="Rating">Rating</label>
+                <select id="Rating" name="Rating" class="form-control">
+                    @for (int rating = 1; rating <= 5; rating++)
+                    {
+                        if (rating == Model.Rating)
+                        {
+                            <option value="@rating" selected>@rating</option>
+                        }
+                        else
+                        {
+                            <option value="@rating">@rating</option>
+                        }
+                    }
+                </select>
+
+            </div>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function showEditForm() {
+        document.getElementById('edit-form').style.display = 'block';
+        document.getElementById('edit-icon').style.display = 'none';
+    }
+
+    function confirmDelete() {
+        if (confirm("Are you sure you want to delete this review?")) {
+            document.getElementById('delete-form').submit();
+        }
+    }
+</script>
+
+
+
+
+@* @model RateMyCar.Models.Review
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 <div id="edit-form" style="display:none;">
@@ -45,4 +119,4 @@
         <input type="hidden" name="ReviewId" value="@Model.ReviewId" />
     </form>
 }
-<p>Reviewed by: @Model.User.Fullname</p>
+<p>Reviewed by: @Model.User.Fullname</p> *@
