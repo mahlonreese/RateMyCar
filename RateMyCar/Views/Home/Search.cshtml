@@ -1,11 +1,25 @@
-﻿@{
+﻿@model IEnumerable<RateMyCar.Models.Review>
+@{
     ViewData["Title"] = "Search Cars";
 }
 
-<h1>@ViewData["Title"]</h1>
+<h2>Search for Cars</h2>
 
-<form method="get" asp-action="SearchCars" asp-controller="Home">
-    <label for="carSearch">Search for a car (Make or Model):</label>
-    <input type="text" id="carSearch" name="query" placeholder="Enter Make or Model" required />
-    <button type="submit">Search</button>
+<form method="post" asp-action="Search">
+    <div class="form-group">
+        <label for="carId">Select a Car:</label>
+        <select id="carId" name="carId" class="form-control">
+            <option value="">-- Select a Car --</option>
+            @foreach (var car in ViewBag.Cars)
+            {
+                <option value="@car.Value">@car.Text</option>
+            }
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Search</button>
 </form>
+
+@if (ViewData["Message"] != null)
+{
+    <div class="alert alert-warning">@ViewData["Message"]</div>
+}

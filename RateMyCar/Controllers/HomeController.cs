@@ -5,6 +5,7 @@ using RateMyCar.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace RateMyCar.Controllers
 {
@@ -132,6 +133,56 @@ namespace RateMyCar.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [HttpGet("/adduser")]
+        public IActionResult AddUser()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddUser(User user)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Users.Add(user);
+                _context.SaveChanges();
+
+                return Redirect("/");
+            }
+
+            return Redirect("/");
+        }
+
+        // GET: Home/Login
+        [HttpGet("/login")]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        // POST: Home/Login
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(usr => usr.Username == model.Username && usr.Password == model.Password);
+            if (user != null)
+            {
+                HttpContext.Session.SetString("Full Name", user.Fullname.ToString());
+                HttpContext.Session.SetInt32("UserId", user.UserId);
+                return RedirectToAction("Index", "Home");
+            }
+
+            // show error if null
+            else
+            {
+                ModelState.AddModelError("", "Invalid username or password.");
+            }
+
+            return View(model);
+
+        }
 
         // car details
         [HttpGet("/cars/{car_id}")]
@@ -159,29 +210,44 @@ namespace RateMyCar.Controllers
         }
 
 
-        [HttpGet("/searchcars")]
-        public IActionResult SearchCars(string query)
+        // GET: /search
+        [HttpGet("/search")]
+        public IActionResult Search()
         {
-            if (string.IsNullOrWhiteSpace(query))
+            var cars = _context.Cars.ToList(); // Get all cars for the dropdown
+            var carList = cars.Select(c => new
             {
-                return RedirectToAction("Index");
-            }
+                CarId = c.CarId,
+                DisplayText = $"{c.Make} {c.Model}"
+            }).ToList();
 
-            //Search for cars matching the query
+            ViewBag.Cars = new SelectList(carList, "CarId", "DisplayText"); // Use the new list
+            return View();
 
-            var matchingCars = _context.Cars
-               .Where(c => c.Make.Contains(query) || c.Model.Contains(query))
-               .Include(c => c.Reviews) // Optionally include reviews
-               .ToList();
+            //ViewBag.Cars = new SelectList(cars, "CarId", "Make", "Model"); // Create a SelectList for the dropdown
+            //return View();
+        }
 
-            if (!matchingCars.Any())
+        // POST: /search
+        [HttpPost("/search")]
+        public IActionResult Search(int carId)
+        {
+            var reviews = _context.Reviews
+                .Include(r => r.Car)
+                .Include(r => r.User)
+                .Where(r => r.CarId == carId)
+                .ToList();
+
+            if (!reviews.Any())
             {
-                return NotFound("No cars found matching your search.");
+                ViewData["Message"] = "No reviews found for the selected car.";
+                return View("SearchResults", new List<Review>());
             }
 
             ViewData["Title"] = "Search Results";
-            return View("SearchResults", matchingCars); // Use a new view to display results
+            return View("SearchResults", reviews);
         }
+
 
 
 

@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Models\NewFile.txt" />
     <None Remove="Views\Home\AddReview.cshtl" />
     <None Remove="Views\Home\NewFile.txt" />
   </ItemGroup>
