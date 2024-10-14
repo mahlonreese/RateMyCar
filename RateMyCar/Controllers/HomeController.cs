@@ -113,7 +113,7 @@ namespace RateMyCar.Controllers
                 Rating = review.Rating,
                 Comments = review.Comments,
                 PhotoUrl = review.PhotoUrl,
-                DatePosted = new DateOnly(2024, 10, 11),
+                DatePosted = new DateOnly(2024, 10, 11), // Could consider putting something here to show the current date for the review, such as "DateTime.Now" instead of manually entering it
                 UserId = (int) userId,
                 CarId = review.CarId
             };
