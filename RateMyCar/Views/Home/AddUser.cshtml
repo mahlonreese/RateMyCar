@@ -4,7 +4,8 @@
     ViewBag.Title = "Create User";
 }
 
-<h2>Create User</h2>
+<h2>Sign Up</h2>
+<br />
 
 @using (Html.BeginForm("AddUser", "Home", FormMethod.Post))
 
@@ -12,8 +13,6 @@
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>User</h4>
-        <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
         <div class="form-group">
@@ -48,9 +47,10 @@
             </div>
         </div>
 
+        <br />
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </div>
     </div>
