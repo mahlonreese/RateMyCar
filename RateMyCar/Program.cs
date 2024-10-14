@@ -10,6 +10,7 @@ namespace RateMyCar
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddSession(options => { options.IdleTimeout = TimeSpan.FromMinutes(1); });
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddDbContext<CarDbContext>(options =>
@@ -33,6 +34,8 @@ namespace RateMyCar
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseSession();
 
             app.MapControllerRoute(
                 name: "default",

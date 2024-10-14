@@ -133,7 +133,8 @@ namespace RateMyCar.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [HttpGet("/adduser")]
+        //[HttpGet("/adduser")]
+        [HttpGet]
         public IActionResult AddUser()
         {
             return View();
@@ -155,7 +156,8 @@ namespace RateMyCar.Controllers
         }
 
         // GET: Home/Login
-        [HttpGet("/login")]
+        //[HttpGet("/login")]
+        [HttpGet]
         public IActionResult Login()
         {
             return View();
