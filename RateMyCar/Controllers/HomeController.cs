@@ -51,6 +51,16 @@ namespace RateMyCar.Controllers
         [HttpGet("/addreview")]
         public IActionResult AddReview()
         {
+            var userId = HttpContext.Session.GetInt32("UserId");
+
+            // Check if the UserId is null
+            if (userId == null)
+            {
+                // Display an error message if the UserId is null
+                ModelState.AddModelError(string.Empty, "You must be logged in to add a review.");
+                return View(); // Return the view with the review model to display the error
+            }
+
             List<Car> cars = _context.Cars.ToList();
             List<User> users = _context.Users.ToList();
 
@@ -87,6 +97,16 @@ namespace RateMyCar.Controllers
 
             var newReviewId = _context.Reviews.Max(r => r.ReviewId) + 1;
 
+            var userId = HttpContext.Session.GetInt32("UserId");
+
+            // Check if the UserId is null
+            if (userId == null)
+            {
+                // Display an error message if the UserId is null
+                ModelState.AddModelError(string.Empty, "You must be logged in to add a review.");
+                return View(review); // Return the view with the review model to display the error
+            }
+
             var newReview = new Review
             {
                 ReviewId = newReviewId,
@@ -94,7 +114,7 @@ namespace RateMyCar.Controllers
                 Comments = review.Comments,
                 PhotoUrl = review.PhotoUrl,
                 DatePosted = new DateOnly(2024, 10, 11),
-                UserId = review.UserId,
+                UserId = (int) userId,
                 CarId = review.CarId
             };
 

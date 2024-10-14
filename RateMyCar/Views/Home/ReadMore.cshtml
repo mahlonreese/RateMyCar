@@ -33,13 +33,16 @@
 <p>Rating: @Model.Rating</p>
 <p>@Model.Comments</p>
 <img src="@Model.PhotoUrl" alt="Car Image" style="height: 300px; object-fit: cover;">
-<a href="#" id="edit-icon" onclick="showEditForm()">
-    <i class="fas fa-pencil-alt"></i>
-</a>
-<a href="#" id="delete-icon" onclick="confirmDelete()">
-    <i class="fas fa-trash-alt"></i>
-</a>
-<form id="delete-form" asp-action="DeleteReview" method="post" style="display:none;">
-    <input type="hidden" name="ReviewId" value="@Model.ReviewId" />
-</form>
+@if (Context.Session.GetInt32("UserId") == @Model.UserId)
+{
+    <a href="#" id="edit-icon" onclick="showEditForm()">
+        <i class="fas fa-pencil-alt"></i>
+    </a>
+    <a href="#" id="delete-icon" onclick="confirmDelete()">
+        <i class="fas fa-trash-alt"></i>
+    </a>
+    <form id="delete-form" asp-action="DeleteReview" method="post" style="display:none;">
+        <input type="hidden" name="ReviewId" value="@Model.ReviewId" />
+    </form>
+}
 <p>Reviewed by: @Model.User.Fullname</p>
