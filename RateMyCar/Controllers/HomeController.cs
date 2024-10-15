@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Identity;
 
 namespace RateMyCar.Controllers
 {
@@ -153,6 +154,7 @@ namespace RateMyCar.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+
         //[HttpGet("/adduser")]
         [HttpGet]
         public IActionResult AddUser()
@@ -166,14 +168,19 @@ namespace RateMyCar.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Use PasswordHasher to hash the password
+                var passwordHasher = new PasswordHasher<User>();
+                user.Password = passwordHasher.HashPassword(user, user.Password);
+
                 _context.Users.Add(user);
                 _context.SaveChanges();
 
                 return Redirect("/");
             }
 
-            return Redirect("/");
+            return View(user);
         }
+
 
         // GET: Home/Login
         //[HttpGet("/login")]
@@ -188,23 +195,25 @@ namespace RateMyCar.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(usr => usr.Username == model.Username && usr.Password == model.Password);
+            var user = await _context.Users.FirstOrDefaultAsync(usr => usr.Username == model.Username);
             if (user != null)
             {
-                HttpContext.Session.SetString("Full Name", user.Fullname.ToString());
-                HttpContext.Session.SetInt32("UserId", user.UserId);
-                return RedirectToAction("Index", "Home");
+                var passwordHasher = new PasswordHasher<User>();
+                var verificationResult = passwordHasher.VerifyHashedPassword(user, user.Password, model.Password);
+
+                if (verificationResult == PasswordVerificationResult.Success)
+                {
+                    HttpContext.Session.SetString("Full Name", user.Fullname.ToString());
+                    HttpContext.Session.SetInt32("UserId", user.UserId);
+                    return RedirectToAction("Index", "Home");
+                }
             }
 
-            // show error if null
-            else
-            {
-                ModelState.AddModelError("", "Invalid username or password.");
-            }
-
+            // show error if null or password verification fails
+            ModelState.AddModelError("", "Invalid username or password.");
             return View(model);
-
         }
+
 
         // car details
         [HttpGet("/cars/{car_id}")]
